@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Sell Your Books')}"></head>
+<body>
+    <div th:replace="~{fragments/layout :: layout('Sell Your Books', ~{::section})}">
+        <section>
+            <div class="container">
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Sell Your Books</h5>
+                                <p class="card-text">Have books you no longer need? Sell them through our marketplace and earn money!</p>
+                                <p class="card-text">It's easy - just list your book, set your price, and we'll handle the rest.</p>
+                                <div class="d-flex gap-2">
+                                    <a th:href="@{/sell/new}" class="btn btn-success">Sell a Book</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h1>My Book Listings</h1>
+                    </div>
+                    
+                    <div th:if="${message}" class="alert alert-success" role="alert">
+                        <span th:text="${message}">Success message</span>
+                    </div>
+                    
+                    <div th:if="${error}" class="alert alert-danger" role="alert">
+                        <span th:text="${error}">Error message</span>
+                    </div>
+                    
+                    <div th:if="${books.empty}" class="alert alert-info">
+                        <p>You haven't listed any books for sale yet. <a th:href="@{/sell/new}">Sell a book now</a>!</p>
+                    </div>
+                    
+                    <div th:if="${!books.empty}" class="card">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Your Book Listings</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Cover</th>
+                                            <th>Title</th>
+                                            <th>Author</th>
+                                            <th>Price</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="book : ${books}">
+                                            <td>
+                                                <img th:if="${book.coverImageUrl}" th:src="${book.coverImageUrl}" alt="Book Cover" class="img-thumbnail" style="max-width: 50px;">
+                                                <span th:unless="${book.coverImageUrl}" class="text-muted">No Image</span>
+                                            </td>
+                                            <td th:text="${book.name}">Book Title</td>
+                                            <td th:text="${book.author}">Author</td>
+                                            <td th:text="${'$' + #numbers.formatDecimal(book.price, 1, 2)}">$19.99</td>
+                                            <td>
+                                                <span th:if="${book.listingStatus == 0}" class="badge bg-success">For Sale</span>
+                                                <span th:if="${book.listingStatus == 1}" class="badge bg-info">Sold</span>
+                                                <span th:if="${book.listingStatus == 2}" class="badge bg-secondary">Cancelled</span>
+                                            </td>
+                                            <td>
+                                                <form th:if="${book.listingStatus == 0}" th:action="@{/sell/cancel/{id}(id=${book.id})}" method="post" class="d-inline">
+                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to cancel this listing? This will remove the book from the marketplace.')">Cancel Listing</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                   
+                <div th:if="${books == null || books.empty}" class="col-md-12">
+                    <p>No books available at the moment. Check back later or <a th:href="@{/sell/new}">sell your own books</a>!</p>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

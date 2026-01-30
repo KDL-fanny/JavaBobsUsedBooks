@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Delete Offer')}"></head>
+<body>
+    <div th:replace="~{fragments/layout :: layout('Delete Offer', ~{::section})}">
+        <section>
+            <div class="container">
+                <div class="row mb-4">
+                    <div class="col">
+                        <h2>Delete Offer</h2>
+                        <p>Permanently delete a book resale offer.</p>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col">
+                        <a th:href="@{/admin/offers}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Offers
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">Delete Offer #<span th:text="${offer.id}">1</span></h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <strong>Warning:</strong> This action cannot be undone. The offer will be permanently deleted from the system.
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h5>Book Information</h5>
+                                <p><strong>Title:</strong> <span th:text="${offer.bookTitle}">Book Title</span></p>
+                                <p><strong>Author:</strong> <span th:text="${offer.author}">Author Name</span></p>
+                                <p><strong>Condition:</strong> <span th:text="${offer.conditionDescription}">Like New</span></p>
+                                <p><strong>Customer:</strong> <span th:text="${offer.customerName}">John Doe</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Offer Details</h5>
+                                <p><strong>Offered Price:</strong> <span th:text="${'$' + #numbers.formatDecimal(offer.offeredPrice, 1, 2)}">$15.00</span></p>
+                                <p><strong>Date Submitted:</strong> <span th:text="${#temporals.format(offer.createdOn, 'yyyy-MM-dd HH:mm')}">2025-03-20 14:30</span></p>
+                                <p><strong>Status:</strong> 
+                                    <span th:class="${'badge ' + 
+                                        (offer.offerStatusName == 'PENDING' ? 'bg-warning' : 
+                                         offer.offerStatusName == 'ACCEPTED' ? 'bg-success' : 
+                                         offer.offerStatusName == 'REJECTED' ? 'bg-danger' : 'bg-secondary')}"
+                                          th:text="${offer.offerStatusName}">PENDING</span>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <form th:action="@{/admin/offers/{id}/delete(id=${offer.id})}" method="post">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a th:href="@{/admin/offers}" class="btn btn-secondary me-md-2">Cancel</a>
+                                <button type="submit" class="btn btn-danger">Delete Offer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

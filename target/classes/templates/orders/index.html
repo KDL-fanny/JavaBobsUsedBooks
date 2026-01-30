@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('My Orders')}"></head>
+<body>
+    <div th:replace="~{fragments/layout :: layout('My Orders', ~{::section})}">
+        <section>
+            <div class="container">
+                <h1>My Orders</h1>
+                
+                <div th:if="${message}" class="alert alert-success" role="alert">
+                    <span th:text="${message}">Success message</span>
+                </div>
+                
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <span th:text="${error}">Error message</span>
+                </div>
+                
+                <div th:if="${orders == null || orders.empty}" class="alert alert-info">
+                    <p>You don't have any orders yet. <a th:href="@{/books}">Start shopping</a></p>
+                </div>
+                
+                <div th:if="${orders != null && !orders.empty}">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="order : ${orders}">
+                                <td th:text="${order.id}">12345</td>
+                                <td th:text="${#temporals.format(order.orderDate, 'MMM dd, yyyy')}">Jan 1, 2025</td>
+                                <td th:text="${order.items.size()}">3</td>
+                                <td th:text="${'$' + order.totalAmount}">$69.77</td>
+                                <td><span class="badge bg-success">Confirmed</span></td>
+                                <td>
+                                    <a th:href="@{/orders/{id}(id=${order.id})}" class="btn btn-sm btn-primary">View Details</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a th:href="@{/books}" class="btn btn-primary">Continue Shopping</a>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

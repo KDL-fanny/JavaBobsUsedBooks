@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Home')}"></head>
+<body>
+    <div th:replace="~{fragments/layout :: layout('Home Page', ~{::section})}">
+        <section>
+            <div class="panel-body">
+                <section class="about-sec">
+                    <div class="about-img">
+                        <figure style="background:url(/images/register.jpg)no-repeat;"></figure>
+                    </div>
+                    <div class="about-content">
+                        <h2>Welcome!</h2>
+                        <p>                
+                            Welcome to Bob's Used Books, your online destination for finding great deals on pre-loved books of all genres and topics. 
+                            Whether you're looking for a classic novel, a rare edition, a textbook, or a cookbook, you'll find it here. 
+                        </p>
+                        <p>You can also sell your own books to us and earn some extra cash. At Bob's Used Books, we believe that every book deserves a second chance.</p>
+                        <p>Shop with us today and discover the joy of reading!</p>
+                        <div class="btn-sec">
+                            <a class="btn btn-primary" th:href="@{/books}">Shop Books</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="recomended-sec">
+                    <div class="title">
+                        <h2>Best Sellers</h2>
+                        <hr>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <!-- If books is not available or empty, show message -->
+                        <div th:if="${books == null || books.empty}">
+                            <p>Check back here soon for a list of our top selling books!</p>
+                        </div>
+                        
+                        <!-- If books is available, show them -->
+                        <div th:if="${books != null && !books.empty}" class="col-lg-3 col-md-6" th:each="book : ${books}">
+                            <div class="item">
+                                <img th:src="${book.coverImageUrl}" alt="Book Cover" class="book_image" 
+                                     onerror="this.onerror=null;this.src='/images/default_c.jpg';">
+                                <p th:text="${book.bookName}">Book Name</p>
+                                <div class="hover">
+                                    <a th:href="@{/books/{id}(id=${book.bookId})}">
+                                        <span>
+                                            <i class="bi bi-arrow-right"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="about-sec">
+                    <div class="about-content m-auto">
+                        <h2>Wish List</h2>
+                        <p>
+                            Found a book that would be perfect for a friend? How about your parents or siblings or children?
+                            Want a book but don't want to buy it yet? The Bookstore now features a brand new wishlist!
+                            Start adding books to your wishlist today.
+                        </p>
+                        <div class="btn-sec">
+                            <a class="btn btn-primary" th:href="@{/wishlist}">Wish List</a>
+                            <a class="btn btn-primary" th:href="@{/books}">Shop Books</a>
+                        </div>
+                    </div>
+                    <div class="about-img">
+                        <figure style="background: url(/images/wishlist.jpg)no-repeat;background-size: 100%"></figure>
+                    </div>
+                </section>
+
+                <section class="features-sec">
+                    <div class="card-group">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <i class="bi bi-cart" style="font-size: 2rem; color: #ffaf00;"></i>
+                                <h5 class="card-title mt-2">Newest titles out there</h5>
+                                <h6 class="card-subtitle mb-3">We're stocked up</h6>
+                                <p class="card-text text-muted">You can be sure that we have the latest books on shelf and are constantly adding new titles daily</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <i class="bi bi-clock-history" style="font-size: 2rem; color: #00aeef;"></i>
+                                <h5 class="card-title mt-2">Two week shipping</h5>
+                                <h6 class="card-subtitle mb-3">Fast shipping guaranteed</h6>
+                                <p class="card-text text-muted">We guarantee your book will reach your hands to be read in two weeks or less, or your money back guaranteed</p>
+                            </div>
+                        </div>
+
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <i class="bi bi-chat-dots" style="font-size: 2rem; color: #00a99d;"></i>
+                                <h5 class="card-title mt-2">Active support</h5>
+                                <h6 class="card-subtitle mb-3">Our team is active</h6>
+                                <p class="card-text text-muted">Need helping picking a book? Confused on what genres are out there? We're available for all questions</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="about-sec">
+                    <div class="about-img">
+                        <figure style="background: url(/images/privacy.jpg)no-repeat;background-size: 100%"></figure>
+                    </div>
+                    <div class="about-content">
+                        <h2>Our Privacy Policy</h2>
+                        <p>
+                            We know your information is important to you. That is why we take the utmost pride in the
+                            security of your information and the protection of your shopping information.
+                            If you wish to learn more about our privacy policy, check out our privacy policy page.
+                        </p>
+                        <div class="btn-sec">
+                            <a class="btn btn-primary" th:href="@{/privacy}">Privacy</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

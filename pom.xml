@@ -59,7 +59,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+           <scope>provided</scope>
         </dependency>
         
         <!-- Development Tools -->
@@ -83,9 +83,9 @@
         </dependency>
         <!-- H2 Database for testing -->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <scope>runtime</scope>
         </dependency>
         
         <!-- JSON Processing -->
@@ -104,22 +104,17 @@
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
+ 
+     <build>
+         <plugins>
+             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>com.bobsusedbooks.BobsUsedBooksApplication</mainClass>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
                 </configuration>
-            </plugin>
-        </plugins>
-    </build>
-</project>
+             </plugin>
+         </plugins>
+     </build>
+ </project>
+

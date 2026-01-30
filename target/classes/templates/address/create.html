@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Add Address')}"></head>
+<body>
+    <div th:replace="~{fragments/layout :: layout('Add Address', ~{::section})}">
+        <section>
+            <div class="panel-body">
+                <h1>Add New Address</h1>
+                <hr />
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <form method="post" th:action="@{/address/create}" th:object="${addressDto}">
+                            <input type="hidden" name="returnUrl" th:value="${returnUrl}" />
+                            
+                            <div class="form-group mb-3">
+                                <label for="addressLine1" class="control-label">Address Line 1</label>
+                                <input type="text" id="addressLine1" name="addressLine1" class="form-control" required />
+                                <span class="text-danger" th:if="${#fields.hasErrors('addressLine1')}" th:errors="*{addressLine1}"></span>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="addressLine2" class="control-label">Address Line 2</label>
+                                <input type="text" id="addressLine2" name="addressLine2" class="form-control" />
+                                <span class="text-danger" th:if="${#fields.hasErrors('addressLine2')}" th:errors="*{addressLine2}"></span>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="city" class="control-label">City</label>
+                                <input type="text" id="city" name="city" class="form-control" required />
+                                <span class="text-danger" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></span>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="state" class="control-label">State</label>
+                                <input type="text" id="state" name="state" class="form-control" required />
+                                <span class="text-danger" th:if="${#fields.hasErrors('state')}" th:errors="*{state}"></span>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="country" class="control-label">Country</label>
+                                <input type="text" id="country" name="country" class="form-control" required />
+                                <span class="text-danger" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></span>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="zipCode" class="control-label">Zip Code</label>
+                                <input type="text" id="zipCode" name="zipCode" class="form-control" required />
+                                <span class="text-danger" th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}"></span>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                                <a th:href="${returnUrl}" class="btn btn-secondary">Back</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

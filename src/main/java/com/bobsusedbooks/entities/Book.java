@@ -30,10 +30,13 @@ public class Book {
     private Boolean isBestseller;
     private Boolean isNewArrival;
     private LocalDate publishDate;
+
     private LocalDate lastRestockDate;
+    @Column(name = "publish_year")
     private Integer year;
     @Column(length = 1000)
     private String summary;
+
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
     private Boolean isAvailable = true;

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Search Books')}"></head>
+<body>
+    <div th:replace="~{fragments/layout :: layout('Search Results', ~{::section})}">
+        <section>
+            <div class="row mb-4">
+                <div class="col-md-8 offset-md-2">
+                    <form th:action="@{/fulltextsearch}" method="get" class="d-flex">
+                        <input type="text" name="query" class="form-control me-2"
+                               placeholder="Search by title, author, or ISBN"
+                               th:value="${query}" required>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        
+                        <!-- Hidden fields to preserve pagination and sorting -->
+                        <input type="hidden" name="page" th:value="${currentPage != null ? currentPage : 0}">
+                        <input type="hidden" name="size" th:value="${size != null ? size : 12}">
+                        <input type="hidden" name="sort" th:value="${sort != null ? sort : 'name'}">
+                        <input type="hidden" name="direction" th:value="${direction != null ? direction : 'asc'}">
+                    </form>
+                </div>
+            </div>
+
+            <!-- Search Results -->
+            <div th:if="${books != null}">
+                <h3 th:if="${books.isEmpty()}">No results found for "<span th:text="${query}"></span>"</h3>
+
+                <div th:if="${!books.isEmpty()}" class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3>Search Results for "<span th:text="${query}"></span>"</h3>
+                            <p>Found <span th:text="${totalItems}"></span> results</p>
+                        </div>
+                        
+                        <!-- Sort options -->
+                        <div class="d-flex align-items-center">
+                            <span class="me-2">Sort by:</span>
+                            <select id="sortSelect" class="form-select form-select-sm" style="width: auto;" onchange="updateSort()">
+                                <option value="name,asc" th:selected="${sort == 'name' && direction == 'asc'}">Title (A-Z)</option>
+                                <option value="name,desc" th:selected="${sort == 'name' && direction == 'desc'}">Title (Z-A)</option>
+                                <option value="author,asc" th:selected="${sort == 'author' && direction == 'asc'}">Author (A-Z)</option>
+                                <option value="author,desc" th:selected="${sort == 'author' && direction == 'desc'}">Author (Z-A)</option>
+                                <option value="price,asc" th:selected="${sort == 'price' && direction == 'asc'}">Price (Low to High)</option>
+                                <option value="price,desc" th:selected="${sort == 'price' && direction == 'desc'}">Price (High to Low)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div th:each="book : ${books}" class="col-md-4 mb-4">
+                        <div class="card h-100 book-card">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${book.name}">Book Title</h5>
+                                <h6 class="card-subtitle mb-2 text-muted" th:text="${book.author}">Author Name</h6>
+                                <p class="card-text">
+                                    <span class="badge bg-secondary me-1" th:if="${book.genreName != null}" th:text="${book.genreName}">Genre</span>
+                                    <span class="badge bg-info me-1" th:if="${book.conditionName != null}" th:text="${book.conditionName}">Condition</span>
+                                </p>
+                                <p class="card-text" th:if="${book.summary != null && !book.summary.isEmpty()}" th:text="${#strings.abbreviate(book.summary, 100)}">Summary</p>
+                                <p class="card-text fw-bold" th:text="${'$' + #numbers.formatDecimal(book.price, 1, 2)}">$19.99</p>
+                                <div class="d-flex justify-content-between">
+                                    <a th:href="@{/books/{id}(id=${book.id})}" class="btn btn-outline-primary">View Details</a>
+                                    <a th:href="@{/cart/add/{id}(id=${book.id})}" class="btn btn-primary">Add to Cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <div th:if="${totalPages > 1}" class="d-flex justify-content-center mt-4">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <!-- Previous page -->
+                            <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                <a class="page-link" th:href="@{/search(query=${query}, page=${currentPage - 1}, size=${size}, sort=${sort}, direction=${direction})}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            
+                            <!-- Page numbers -->
+                            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
+                                th:classappend="${currentPage == i ? 'active' : ''}">
+                                <a class="page-link" th:href="@{/search(query=${query}, page=${i}, size=${size}, sort=${sort}, direction=${direction})}" 
+                                   th:text="${i + 1}">1</a>
+                            </li>
+                            
+                            <!-- Next page -->
+                            <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                <a class="page-link" th:href="@{/search(query=${query}, page=${currentPage + 1}, size=${size}, sort=${sort}, direction=${direction})}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                
+                <!-- Results per page selector -->
+                <div class="d-flex justify-content-center mt-3">
+                    <div class="form-inline">
+                        <label for="sizeSelect" class="me-2">Results per page:</label>
+                        <select id="sizeSelect" class="form-select form-select-sm" style="width: auto;" onchange="updateSize()">
+                            <option value="12" th:selected="${size == 12}">12</option>
+                            <option value="24" th:selected="${size == 24}">24</option>
+                            <option value="48" th:selected="${size == 48}">48</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Initial state when no search has been performed -->
+            <div th:if="${books == null}" class="text-center my-5">
+                <h3>Search for Books</h3>
+                <p class="lead">Enter a search term above to find books by title, author, or ISBN.</p>
+            </div>
+            
+            <script>
+                function updateSort() {
+                    const sortValue = document.getElementById('sortSelect').value;
+                    const [sort, direction] = sortValue.split(',');
+                    
+                    const currentUrl = new URL(window.location.href);
+                    currentUrl.searchParams.set('sort', sort);
+                    currentUrl.searchParams.set('direction', direction);
+                    currentUrl.searchParams.set('page', '0'); // Reset to first page when sorting changes
+                    
+                    window.location.href = currentUrl.toString();
+                }
+                
+                function updateSize() {
+                    const size = document.getElementById('sizeSelect').value;
+                    
+                    const currentUrl = new URL(window.location.href);
+                    currentUrl.searchParams.set('size', size);
+                    currentUrl.searchParams.set('page', '0'); // Reset to first page when size changes
+                    
+                    window.location.href = currentUrl.toString();
+                }
+            </script>
+        </section>
+    </div>
+</body>
+</html>

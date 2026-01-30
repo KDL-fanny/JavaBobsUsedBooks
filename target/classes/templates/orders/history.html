@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Order History')}"></head>
+<body>
+    <div th:replace="~{fragments/layout :: layout('Order History', ~{::section})}">
+        <section>
+            <div class="container">
+                <h1>Your Order History</h1>
+                
+                <div th:if="${message}" class="alert alert-success" role="alert">
+                    <span th:text="${message}">Success message</span>
+                </div>
+                
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <span th:text="${error}">Error message</span>
+                </div>
+                
+                <div th:if="${orders == null || orders.empty}" class="alert alert-info">
+                    <p>You don't have any orders yet. <a th:href="@{/books}">Start shopping</a></p>
+                </div>
+                
+                <div th:if="${orders != null && !orders.empty}">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="order : ${orders}">
+                                <td>
+                                    <a th:href="@{/orders/{id}(id=${order.id})}" th:text="${'#' + order.id}">Order #123</a>
+                                </td>
+                                <td th:text="${#temporals.format(order.createdOn, 'yyyy-MM-dd HH:mm')}">2023-01-01</td>
+                                <td th:text="${order.status}">Processing</td>
+                                <td th:text="${'$' + order.total}">$59.97</td>
+                                <td>
+                                    <a th:href="@{/orders/{id}(id=${order.id})}" class="btn btn-sm btn-primary">View</a>
+                                    <form th:if="${order.status == 'PENDING' || order.status == 'PROCESSING'}" 
+                                          th:action="@{/orders/{id}/cancel(id=${order.id})}" 
+                                          method="post" 
+                                          style="display: inline;">
+                                        <button type="submit" class="btn btn-sm btn-danger" 
+                                                onclick="return confirm('Are you sure you want to cancel this order?')">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- Pagination -->
+                    <nav th:if="${orders.totalPages > 1}">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${orders.first ? 'disabled' : ''}">
+                                <a class="page-link" th:href="@{/orders/history(page=${orders.number - 1})}" tabindex="-1">Previous</a>
+                            </li>
+                            <li class="page-item" th:each="i : ${#numbers.sequence(0, orders.totalPages - 1)}" 
+                                th:classappend="${i == orders.number ? 'active' : ''}">
+                                <a class="page-link" th:href="@{/orders/history(page=${i})}" th:text="${i + 1}">1</a>
+                            </li>
+                            <li class="page-item" th:classappend="${orders.last ? 'disabled' : ''}">
+                                <a class="page-link" th:href="@{/orders/history(page=${orders.number + 1})}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                
+                <div class="mt-4">
+                    <a th:href="@{/books}" class="btn btn-primary">Continue Shopping</a>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

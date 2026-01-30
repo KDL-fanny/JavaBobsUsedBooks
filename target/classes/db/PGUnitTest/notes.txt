@@ -1,0 +1,78 @@
+@workspace
+
+As an experienced PostgreSQL developer, 
+I need help creating a comprehensive test case for the '[schema.object-name]' [procedure/function]. 
+Please follow the existing test structure from our test framework while incorporating these specific requirements:
+
+Our existing test framework pattern shown in
+- test_add_numbers.sql
+- test_get_name_by_id.sql
+- test_delete_records_by_name.sql
+- test_sp_get_records.sql
+
+Test Structure Requirements:
+1. Initialize Phase:
+   - Must begin with 'call test$initialize();' to set up test record table
+
+2. Arrange Phase:
+   - Create necessary test data covering multiple scenarios:
+     * Standard cases with valid inputs
+     * Edge cases (if applicable: NULL values, empty values, boundary conditions)
+     * Special cases (if applicable: Unicode, special characters, etc.)
+   - Document each test data entry with comments
+   - Use temporary tables to avoid database pollution
+
+3. Act Phase:
+   - Execute the function under test with various inputs
+   - Store results in appropriate variables for comparison
+   - Include proper error handling for function execution
+
+4. Assert Phase:
+   - Compare actual results with expected results
+   - Use 'test$record_result' to log test outcomes
+   - Required parameters for test$record_result:
+     * test_case: descriptive name of the test
+     * result: boolean indicating pass/fail
+     * error_message: detailed message if test fails
+   - Call test$report_result() to display test result details
+
+5. Cleanup Phase:
+   - Must use "call test$drop_temp_table" to drop any temporary tables created
+   - Must end with 'call test$cleanup();' to remove test record table
+   - Ensure cleanup executes even if tests fail
+
+
+Test Case Categories to Include:
+1. Happy Path:
+   - Test with valid, expected inputs
+   - Verify normal operation scenarios
+
+2. Edge Cases:(if relevant)
+   - NULL inputs
+   - Empty or blank inputs
+   - Minimum/maximum values
+   - Boundary conditions
+
+3. Error Cases:(if relevant)
+   - Invalid inputs
+   - Out-of-range values
+   - Incorrect data types (if applicable)
+
+4. Special Cases:(if relevant)
+   - Format variations
+   - Special characters (if applicable)
+   - Unicode characters (if applicable)
+   - Performance edge cases (if relevant)
+
+Best Practices to Follow:
+- The test case created as procedure in schema test and start with test_
+- Include comprehensive error handling throughout all phases
+- Provide detailed test result reporting by calling test$report_result()
+- Close refcursor by calling test.test$close_cursor with cursor name
+- Follow PostgreSQL best practices for test case development
+- Ensure test isolation (tests should not affect each other)
+- Include comments explaining test scenarios
+- Handle both successful and failure scenarios
+- Use meaningful test case names
+- Keep tests independent and repeatable
+- There is no FINALLY keyword in PostgreSQL exception handling

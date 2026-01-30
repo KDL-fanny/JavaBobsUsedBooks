@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Sell a Book')}"></head>
+<body>
+    <div th:replace="~{fragments/layout :: layout('Sell a Book', ~{::section})}">
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Sell Your Book</h5>
+                            </div>
+                            <div class="card-body">
+                                <form th:action="@{/sell/new}" th:object="${book}" method="post" enctype="multipart/form-data">
+                                    <!-- Hidden field to ensure isAvailable is true -->
+                                    <input type="hidden" th:field="*{isAvailable}" value="true" />
+                                    
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Book Title *</label>
+                                        <input type="text" class="form-control" id="name" th:field="*{name}" required>
+                                        <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="author" class="form-label">Author *</label>
+                                        <input type="text" class="form-control" id="author" th:field="*{author}" required>
+                                        <div class="text-danger" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="isbn" class="form-label">ISBN</label>
+                                        <input type="text" class="form-control" id="isbn" th:field="*{isbn}">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></div>
+                                    </div>
+                                    
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="genreId" class="form-label">Genre</label>
+                                            <select class="form-select" id="genreId" th:field="*{genreId}">
+                                                <option value="">-- Select Genre --</option>
+                                                <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <label for="conditionId" class="form-label">Condition *</label>
+                                            <select class="form-select" id="conditionId" th:field="*{conditionId}" required>
+                                                <option value="">-- Select Condition --</option>
+                                                <option th:each="condition : ${conditions}" th:value="${condition.id}" th:text="${condition.name}"></option>
+                                            </select>
+                                            <div class="text-danger" th:if="${#fields.hasErrors('conditionId')}" th:errors="*{conditionId}"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="publisherId" class="form-label">Publisher</label>
+                                            <select class="form-select" id="publisherId" th:field="*{publisherId}">
+                                                <option value="">-- Select Publisher --</option>
+                                                <option th:each="publisher : ${publishers}" th:value="${publisher.id}" th:text="${publisher.name}"></option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <label for="bookTypeId" class="form-label">Book Type</label>
+                                            <select class="form-select" id="bookTypeId" th:field="*{bookTypeId}">
+                                                <option value="">-- Select Book Type --</option>
+                                                <option th:each="bookType : ${bookTypes}" th:value="${bookType.id}" th:text="${bookType.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="price" class="form-label">Asking Price ($) *</label>
+                                        <input type="number" step="0.01" min="0.01" class="form-control" id="price" th:field="*{price}" required>
+                                        <div class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="quantity" class="form-label">Quantity *</label>
+                                        <input type="number" min="1" class="form-control" id="quantity" th:field="*{quantity}" value="1" required>
+                                        <div class="text-danger" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="summary" class="form-label">Description</label>
+                                        <textarea class="form-control" id="summary" th:field="*{summary}" rows="3" placeholder="Provide details about the book's condition, any highlights or notes, etc."></textarea>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="coverImage" class="form-label">Cover Image</label>
+                                        <input type="file" class="form-control" id="coverImage" name="coverImage" accept="image/*">
+                                        <div class="form-text">Upload a clear image of the book cover (max 5MB). A good cover image helps your book sell faster!</div>
+                                    </div>
+                                    
+                                    <div class="alert alert-info">
+                                        <strong>Note:</strong> By listing your book, you agree that it will be immediately available for purchase in our marketplace.
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between">
+                                        <a th:href="@{/sell}" class="btn btn-secondary">Cancel</a>
+                                        <button type="submit" class="btn btn-primary">List Book for Sale</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

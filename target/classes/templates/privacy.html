@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/layout :: head('Privacy Policy')">
+    <title>Privacy Policy - Bob's Used Books</title>
+</head>
+<body>
+    <div th:replace="fragments/layout :: layout('Privacy Policy', ~{::main})">
+        <main>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2>Information We Collect</h2>
+                    <br>
+                    <p>At Bob's Used Books, we collect the following types of information:</p>
+                    <ul>
+                        <li>Personal information such as name, email address, and shipping address when you create an account or place an order</li>
+                        <li>Payment information when you make a purchase</li>
+                        <li>Information about your browsing behavior on our website</li>
+                        <li>Information about books you sell or offer to us</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2>How We Use Your Information</h2>
+                    <br>
+                    <p>We use your information to:</p>
+                    <ul>
+                        <li>Process and fulfill your orders</li>
+                        <li>Communicate with you about your orders and account</li>
+                        <li>Improve our website and services</li>
+                        <li>Send you marketing communications (if you've opted in)</li>
+                        <li>Process book resale offers</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2>Information Sharing</h2>
+                    <br>
+                    <p>We do not sell or rent your personal information to third parties. We may share your information with:</p>
+                    <ul>
+                        <li>Service providers who help us operate our business</li>
+                        <li>Shipping partners to deliver your orders</li>
+                        <li>Legal authorities when required by law</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2>Your Rights</h2>
+                    <br>
+                    <p>You have the right to:</p>
+                    <ul>
+                        <li>Access the personal information we hold about you</li>
+                        <li>Request correction of inaccurate information</li>
+                        <li>Request deletion of your information</li>
+                        <li>Opt out of marketing communications</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2>Contact Us</h2>
+                    <br>
+                    <p>If you have any questions about our privacy policy, please contact us at privacy@bobsusedbooks.com</p>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

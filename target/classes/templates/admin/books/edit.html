@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Edit Book')}"></head>
+<body>
+    <div th:replace="~{fragments/layout :: layout('Edit Book', ~{::section})}">
+        <section>
+            <div class="container">
+                <div class="row mb-4">
+                    <div class="col">
+                        <h2>Edit Book</h2>
+                        <p>Update book information in the inventory.</p>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col">
+                        <a th:href="@{/books/admin}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Book Management
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Book Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/books/admin/edit/{id}(id=${book.id})}" method="post" th:object="${book}">
+                            <input type="hidden" th:field="*{id}">
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">Title <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="name" th:field="*{name}" required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="author" class="form-label">Author <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="author" th:field="*{author}" required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="isbn" class="form-label">ISBN</label>
+                                    <input type="text" class="form-control" id="isbn" th:field="*{isbn}">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="price" class="form-label">Price ($) <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="price" th:field="*{price}" step="0.01" min="0" required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="publisherId" class="form-label">Publisher</label>
+                                    <select class="form-select" id="publisherId" th:field="*{publisherId}">
+                                        <option value="">-- Select Publisher --</option>
+                                        <option th:each="publisher : ${publishers}" th:value="${publisher.id}" th:text="${publisher.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="genreId" class="form-label">Genre</label>
+                                    <select class="form-select" id="genreId" th:field="*{genreId}">
+                                        <option value="">-- Select Genre --</option>
+                                        <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="bookTypeId" class="form-label">Book Type</label>
+                                    <select class="form-select" id="bookTypeId" th:field="*{bookTypeId}">
+                                        <option value="">-- Select Book Type --</option>
+                                        <option th:each="bookType : ${bookTypes}" th:value="${bookType.id}" th:text="${bookType.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="conditionId" class="form-label">Condition <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="conditionId" th:field="*{conditionId}" required>
+                                        <option value="">-- Select Condition --</option>
+                                        <option th:each="condition : ${conditions}" th:value="${condition.id}" th:text="${condition.name}"></option>
+                                    </select>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('conditionId')}" th:errors="*{conditionId}"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" th:field="*{description}" rows="4"></textarea>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="isFeatured" th:field="*{isFeatured}">
+                                        <label class="form-check-label" for="isFeatured">Featured Book</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="isBestseller" th:field="*{isBestseller}">
+                                        <label class="form-check-label" for="isBestseller">Bestseller</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="isNewArrival" th:field="*{isNewArrival}">
+                                        <label class="form-check-label" for="isNewArrival">New Arrival</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a th:href="@{/books/admin}" class="btn btn-secondary me-md-2">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Update Book</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

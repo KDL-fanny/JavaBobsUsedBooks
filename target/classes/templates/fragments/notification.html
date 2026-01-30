@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div th:fragment="notification" class="alert" th:classappend="${notification.type == 'success' ? 'alert-success' : notification.type == 'error' ? 'alert-danger' : 'alert-info'}" role="alert">
+        <span th:text="${notification.message}">Notification message</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</body>
+</html>

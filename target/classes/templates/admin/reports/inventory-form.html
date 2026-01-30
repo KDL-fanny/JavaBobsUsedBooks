@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Inventory Report')}">
+    <title>Inventory Report - Bob's Used Books</title>
+</head>
+<body>
+    <div th:replace="~{fragments/layout :: layout('Inventory Report', ~{::main})}">
+        <main>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin">Admin Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/reports">Reports</a></li>
+                            <li class="breadcrumb-item active">Inventory Report</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">Generate Inventory Report</h5>
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/admin/reports/inventory/generate}" method="get">
+                                <div class="mb-3">
+                                    <label for="category" class="form-label">Category Filter (Optional)</label>
+                                    <select class="form-select" id="category" name="category">
+                                        <option value="">All Categories</option>
+                                        <option value="Fiction">Fiction</option>
+                                        <option value="Non-Fiction">Non-Fiction</option>
+                                        <option value="Science Fiction">Science Fiction</option>
+                                        <option value="Mystery">Mystery</option>
+                                        <option value="Biography">Biography</option>
+                                        <option value="History">History</option>
+                                        <option value="Children">Children</option>
+                                        <option value="Young Adult">Young Adult</option>
+                                        <!-- Add more categories as needed -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="sortBy" class="form-label">Sort By</label>
+                                    <select class="form-select" id="sortBy" name="sortBy">
+                                        <option value="title">Title</option>
+                                        <option value="price">Price</option>
+                                        <option value="quantity">Quantity</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success">Generate Report</button>
+                                <a href="/admin/reports" class="btn btn-secondary">Cancel</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Admin Reports')}">
+    <title>Admin Reports - Bob's Used Books</title>
+</head>
+<body>
+    <div th:replace="~{fragments/layout :: layout('Admin Reports', ~{::main})}">
+        <main>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin">Admin Dashboard</a></li>
+                            <li class="breadcrumb-item active">Reports</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Monthly Sales Report</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Generate a detailed report of sales for a specific month. The report includes:</p>
+                            <ul>
+                                <li>Total sales amount</li>
+                                <li>Number of orders</li>
+                                <li>Average order value</li>
+                                <li>Daily sales breakdown</li>
+                                <li>Sales by book category</li>
+                            </ul>
+                            <a href="/admin/reports/monthly-sales" class="btn btn-primary">Generate Monthly Sales Report</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">Inventory Report</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Generate a detailed report of current inventory. The report includes:</p>
+                            <ul>
+                                <li>Total number of books</li>
+                                <li>Total inventory value</li>
+                                <li>Books by category</li>
+                                <li>Low stock items</li>
+                                <li>Inventory value by category</li>
+                            </ul>
+                            <a href="/admin/reports/inventory" class="btn btn-success">Generate Inventory Report</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

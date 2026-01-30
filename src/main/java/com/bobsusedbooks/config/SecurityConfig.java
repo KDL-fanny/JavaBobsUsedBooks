@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 
 import javax.sql.DataSource;
 
@@ -62,11 +64,40 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) // For API endpoints
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/home", "/privacy", "/books", "/books/**", "/search/**", "/fulltextsearch/**","/images/**", "/css/**", "/js/**").permitAll()
-                .requestMatchers("/api/books", "/api/books/**", "/api/reference-data/**").permitAll()
-                .requestMatchers("/login", "/register", "/forgot-password", "/reset-password").permitAll()
-                .requestMatchers("/cart/**", "/checkout/**", "/wishlist/**", "/address/**").authenticated()
-                .requestMatchers("/api/cart/**", "/api/orders/**", "/api/offers/**").authenticated()
+                .requestMatchers(
+                    AntPathRequestMatcher.antMatcher("/"),
+                    AntPathRequestMatcher.antMatcher("/home"),
+                    AntPathRequestMatcher.antMatcher("/privacy"),
+                    AntPathRequestMatcher.antMatcher("/books"),
+                    AntPathRequestMatcher.antMatcher("/books/**"),
+                    AntPathRequestMatcher.antMatcher("/search/**"),
+                    AntPathRequestMatcher.antMatcher("/fulltextsearch/**"),
+                    AntPathRequestMatcher.antMatcher("/images/**"),
+                    AntPathRequestMatcher.antMatcher("/css/**"),
+                    AntPathRequestMatcher.antMatcher("/js/**")
+                ).permitAll()
+                .requestMatchers(
+                    AntPathRequestMatcher.antMatcher("/api/books"),
+                    AntPathRequestMatcher.antMatcher("/api/books/**"),
+                    AntPathRequestMatcher.antMatcher("/api/reference-data/**")
+                ).permitAll()
+                .requestMatchers(
+                    AntPathRequestMatcher.antMatcher("/login"),
+                    AntPathRequestMatcher.antMatcher("/register"),
+                    AntPathRequestMatcher.antMatcher("/forgot-password"),
+                    AntPathRequestMatcher.antMatcher("/reset-password")
+                ).permitAll()
+                .requestMatchers(
+                    AntPathRequestMatcher.antMatcher("/cart/**"),
+                    AntPathRequestMatcher.antMatcher("/checkout/**"),
+                    AntPathRequestMatcher.antMatcher("/wishlist/**"),
+                    AntPathRequestMatcher.antMatcher("/address/**")
+                ).authenticated()
+                .requestMatchers(
+                    AntPathRequestMatcher.antMatcher("/api/cart/**"),
+                    AntPathRequestMatcher.antMatcher("/api/orders/**"),
+                    AntPathRequestMatcher.antMatcher("/api/offers/**")
+                ).authenticated()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

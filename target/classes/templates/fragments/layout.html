@@ -1,0 +1,119 @@
+<!-- /Users/donghual/Downloads/BobsUsedBooks 2/src/main/resources/templates/fragments/layout.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' - Bob\'s Used Books'">Bob's Used Books</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <div th:fragment="layout(pageTitle, content)">
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <!-- Title (no hyperlink) -->
+                <!-- Navigation -->
+                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                    <div class="container">
+                        <!-- Title with link to home page -->
+                        <a class="navbar-brand fs-3 me-4" th:href="@{/}">Bob's Used Books</a>
+
+                        <!-- Main navigation items (left-aligned) -->
+                        <div class="navbar-nav me-auto">
+                            <a class="nav-link" th:href="@{/books}">Browse Books</a>
+                            <a class="nav-link" th:href="@{/fulltextsearch}">Search Books</a>
+                            <a class="nav-link" th:href="@{/sell}">Sell Books</a>
+                            <a class="nav-link" th:href="@{/cart}" sec:authorize="isAuthenticated()">Cart</a>
+                            <a class="nav-link" th:href="@{/wishlist}" sec:authorize="isAuthenticated()">Wishlist</a>
+                            <a class="nav-link" th:href="@{/orders/history}" sec:authorize="isAuthenticated()">Order History</a>
+                        </div>
+
+                        <!-- Authentication items (right-aligned) -->
+                        <div class="navbar-nav">
+                            <!-- Show these items ONLY when user is NOT authenticated -->
+                            <a class="nav-link" th:href="@{/login}" sec:authorize="!isAuthenticated()">Login</a>
+                            <a class="nav-link" th:href="@{/register}" sec:authorize="!isAuthenticated()">Register</a>
+
+                            <!-- Show these items ONLY when user IS authenticated -->
+                            <div sec:authorize="isAuthenticated()" class="d-flex align-items-center">
+                                <span class="text-light me-2">Welcome: <span sec:authentication="name"></span></span>
+                                <form th:action="@{/logout}" method="post" class="m-0">
+                                    <button type="submit" class="btn btn-link nav-link p-0">Logout</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+            </div>
+        </nav>
+
+        <!-- Page Title -->
+        <div class="bg-light py-3 mb-4">
+            <div class="container">
+                <h1 class="h3 mb-0" th:text="${pageTitle}">Page Title</h1>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container mb-5">
+            <!-- Flash Messages -->
+            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <span th:text="${successMessage}">Success message</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <span th:text="${errorMessage}">Error message</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div th:if="${message}" class="alert alert-info alert-dismissible fade show" role="alert">
+                <span th:text="${message}">Info message</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <!-- Content -->
+            <div th:replace="${content}">
+                Page content goes here
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-dark text-white py-4 mt-auto">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Bob's Used Books</h5>
+                        <p>Your source for quality used books at affordable prices.</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li><a class="text-white" th:href="@{/books}">Browse Books</a></li>
+                            <li><a class="text-white" th:href="@{/sell/new}">Sell Books</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Contact</h5>
+                        <address class="mb-0">
+                            123 Book Street<br>
+                            Reading, PA 19601<br>
+                            <a class="text-white" href="mailto:info@bobsusedbooks.com">info@bobsusedbooks.com</a>
+                        </address>
+                    </div>
+                </div>
+                <div class="border-top border-secondary pt-3 mt-3">
+                    <p class="mb-0 text-center">&copy; 2025 Bob's Used Books. All rights reserved.</p>
+                    <p class="mb-0 text-center text-white small mt-1" th:text="'Print current database for demo purpose: ' + ${databaseInfo}">Print current database for demo purpose: demo@localhost:1521/xepdb1</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script th:src="@{/js/scripts.js}"></script>
+    </div>
+</body>
+</html>

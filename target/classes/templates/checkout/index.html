@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Checkout')}"></head>
+<body>
+    <div th:replace="~{fragments/layout :: layout('Checkout', ~{::section})}">
+        <section>
+            <div class="panel-body">
+                <h1>Finish your order</h1>
+                <br />
+                <br />
+                <div class="container" style="text-align: center">
+                    <ul class="time-horizontal">
+                        <li style="color:red"><b></b>Cart</li>
+                        <li style="color:red"><b></b>Choose Address</li>
+                        <li>
+                            <p></p>Finish
+                        </li>
+                    </ul>
+                </div>
+                <br />
+                <br />
+                <br />
+
+                <div>
+                    <h2 th:text="'Total price: $' + ${total}">Total price: $0.00</h2>
+                </div>
+
+                <form method="post" th:action="@{/checkout/complete}">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Address Line 1</th>
+                            <th>Address Line 2</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>Country</th>
+                            <th>ZipCode</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="address : ${addresses}">
+                            <td>
+                                <input type="radio" name="selectedAddressId" th:value="${address.id}" />
+                            </td>
+                            <td th:text="${address.addressLine1}">
+                                Address Line 1
+                            </td>
+                            <td th:text="${address.addressLine2}">
+                                Address Line 2
+                            </td>
+                            <td th:text="${address.city}">
+                                City
+                            </td>
+                            <td th:text="${address.state}">
+                                State
+                            </td>
+                            <td th:text="${address.country}">
+                                Country
+                            </td>
+                            <td th:text="${address.zipCode}">
+                                Zip Code
+                            </td>
+                            <td>
+                                <a th:href="@{/address/update/{id}(id=${address.id}, returnUrl=${#httpServletRequest.requestURI})}">Edit</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div th:if="${addresses == null || addresses.empty}">
+                        <input type="submit" value="Finish your order" class="btn btn-primary" disabled />
+                        <p style="color:red"> Add an Address to proceed to checkout </p>
+                    </div>
+                    <div th:unless="${addresses == null || addresses.empty}">
+                        <input type="submit" value="Finish your order" class="btn btn-primary" />
+                    </div>
+                </form>
+
+                <div>
+                    <p style="text-align: center">
+                        <a th:href="@{/address/create(returnUrl=${#httpServletRequest.requestURI})}">Add address</a>
+                    </p>
+                </div>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Cover</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${shoppingCartItems}">
+                        <td>
+                            <img th:src="${item.imageUrl}" height="80" width="50" onerror="this.onerror=null;this.src='/images/default_c.jpg';" />
+                        </td>
+                        <td>
+                            <span th:class="${item.outOfStock ? 'text-danger' : ''}" th:text="${item.bookName}">Book Name</span>
+
+                            <p th:if="${item.outOfStock}" class="text-danger"><small>Out of stock</small></p>
+                        </td>
+
+                        <td>
+                            <span th:style="${item.outOfStock ? 'text-decoration: line-through;' : ''}" th:text="'$' + ${item.price}">$19.99</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

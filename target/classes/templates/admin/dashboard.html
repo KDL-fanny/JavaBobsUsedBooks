@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Admin Dashboard')}"></head>
+<body>
+    <div th:replace="~{fragments/layout :: layout('Admin Dashboard', ~{::section})}">
+        <section class="admin-dashboard">
+            <div class="container">
+                <div class="row mb-4">
+                    <div class="col">
+                        <h2>Admin Dashboard</h2>
+                        <p>Welcome, <span th:text="${username}">Admin</span>!</p>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Book Management</h5>
+                                <p class="card-text">Manage book inventory, add new books, update existing ones.</p>
+                                <a th:href="@{/books/admin}" class="btn btn-primary">Manage Books</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Order Management</h5>
+                                <p class="card-text">View and process customer orders.</p>
+                                <a th:href="@{/admin/orders}" class="btn btn-primary">Manage Orders</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Customer Management</h5>
+                                <p class="card-text">View and manage customer accounts.</p>
+                                <a th:href="@{/admin/customers}" class="btn btn-primary">Manage Customers</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Offer Management</h5>
+                                <p class="card-text">Review and process book resale offers from customers.</p>
+                                <a th:href="@{/admin/offers}" class="btn btn-primary">Manage Offers</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Reference Data</h5>
+                                <p class="card-text">Manage genres, publishers, book types, and conditions.</p>
+                                <a th:href="@{/admin/reference-data}" class="btn btn-primary">Manage Reference Data</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Reports</h5>
+                                <p class="card-text">View sales reports and analytics.</p>
+                                <a th:href="@{/admin/reports}" class="btn btn-primary">View Reports</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col">
+                        <a th:href="@{/admin/logout}" class="btn btn-danger">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/layout :: head('Monthly Sales Report')">
+    <title>Monthly Sales Report - Bob's Used Books</title>
+</head>
+<body>
+    <div th:replace="fragments/layout :: layout('Monthly Sales Report', ~{::main})">
+        <main>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin">Admin Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/reports">Reports</a></li>
+                            <li class="breadcrumb-item active">Monthly Sales Report</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Generate Monthly Sales Report</h5>
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/admin/reports/monthly-sales/generate}" method="get">
+                                <div class="mb-3">
+                                    <label for="month" class="form-label">Select Month</label>
+                                    <input type="month" class="form-control" id="month" name="month" 
+                                           th:value="${currentMonth}" required>
+                                    <div class="form-text">Select the month and year for the sales report.</div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Generate Report</button>
+                                <a href="/admin/reports" class="btn btn-secondary">Cancel</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
